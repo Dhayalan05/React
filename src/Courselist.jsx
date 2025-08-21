@@ -1,35 +1,30 @@
 import Course from './Course';
-import { useState, useEffect } from 'react';
+import useFtech from './useFetch';
+
 
 
 function Courselist() {
 
-    const [courses, setCourse] = useState(null);
-
-    const [dummy, setDummy] = useState(true);
-
-    useEffect(() => {
-
-        fetch('http://localhost:3000/courses')
-            .then(response => {
-                console.log(response);
-                return response.json()
-            }).then( data => setCourse(data))
-
-    }, []);
-
+     //const [courses, setCourse] = useState(null);
+      
+    const[courses,dummy,error ] = useFtech('http://localhost:3000/courses');
 
     function handleDelete(id) {
         console.log(id);
         const newCourses = courses.filter((course) => course.id != id)
         setCourse(newCourses);
     }
-    
-    if(!courses){
-        return <></>
+
+    if (!courses) {
+        return (
+            <>
+                {!error && <img className='img' src="data\assets\lod1.webp" />  }
+                {error && <p>{error}</p>}
+            </>
+        )
     }
-    
-    
+
+
 
     const coutrseslist = courses.map(
         (course) =>
